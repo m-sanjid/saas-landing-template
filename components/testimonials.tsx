@@ -1,6 +1,6 @@
-"use client";
-
-import { motion, useAnimationControls } from "framer-motion";
+import { InfiniteSlider } from "./motion-primitives/infinite-slider";
+import { SectionContainer } from "./container";
+import { SectionHeader } from "./section-header";
 
 const testimonials = [
   {
@@ -29,27 +29,12 @@ const testimonials = [
 ];
 
 function Row({ reversed = false }: { reversed?: boolean }) {
-  const controls = useAnimationControls();
-
-  const base = {
-    animate: {
-      x: reversed ? ["0%", "-50%"] : ["-50%", "0%"],
-      transition: {
-        duration: 18,
-        ease: "linear",
-        repeat: Number.POSITIVE_INFINITY,
-      },
-    },
-  };
-
   return (
-    <motion.div
-      className="flex gap-4 py-2"
-      onMouseEnter={() => controls.stop()}
-      onMouseLeave={() => controls.start(base.animate)}
-      animate={controls}
-      initial={false}
-      {...base}
+    <InfiniteSlider
+      speed={18}
+      speedOnHover={0.2}
+      reverse={reversed}
+      className="my-4"
     >
       {[...testimonials, ...testimonials].map((t, i) => (
         <figure
@@ -63,30 +48,23 @@ function Row({ reversed = false }: { reversed?: boolean }) {
           </figcaption>
         </figure>
       ))}
-    </motion.div>
+    </InfiniteSlider>
   );
 }
 
 export function Testimonials() {
   return (
-    <section
-      id="testimonials"
-      className="mx-auto max-w-6xl px-4 py-16 md:py-20"
-    >
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-semibold text-balance md:text-4xl">
-          What customers say
-        </h2>
-        <p className="text-muted-foreground mt-3 md:text-lg">
-          Trusted by founders, designers, and engineers to ship high-quality
-          SaaS faster.
-        </p>
-      </div>
+    <SectionContainer>
+      <SectionHeader
+        title="What customers say"
+        subTitle="Trusted by founders, designers, and engineers to ship high-quality SaaS faster."
+        badge="Trusted by 1,000+ developers"
+      />
 
-      <div className="mt-8 overflow-hidden">
+      <div className="mt-8 overflow-hidden mask-r-from-95% mask-l-from-95%">
         <Row />
         <Row reversed />
       </div>
-    </section>
+    </SectionContainer>
   );
 }

@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/lib/site-config";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteNavbar } from "@/components/site-navbar";
 
 export const metadata: Metadata = {
   title: {
@@ -80,7 +81,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div>
+            <SiteNavbar />
+            {children}
+          </div>
           {/* Floating theme toggle for easy access */}
           <div aria-hidden="false" className="fixed right-4 bottom-4 z-40">
             <ThemeToggle />

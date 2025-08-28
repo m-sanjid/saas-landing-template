@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { SectionContainer } from "./container";
 
 export function CtaBanner() {
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-16">
+    <SectionContainer>
       <div
         className="relative overflow-hidden rounded-xl border p-8 text-center md:p-12"
         style={{
@@ -54,6 +55,6 @@ export function CtaBanner() {
           }}
         />
       </div>
-    </section>
+    </SectionContainer>
   );
 }

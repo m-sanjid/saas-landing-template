@@ -14,20 +14,19 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
+import { SectionContainer } from "./container";
+import { SectionHeader } from "./section-header";
 
 export function Pricing() {
   const [yearly, setYearly] = React.useState(true);
 
   return (
-    <section id="pricing" className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-semibold text-balance md:text-4xl">
-          Simple pricing
-        </h2>
-        <p className="text-muted-foreground mt-3 md:text-lg">
-          Start free and upgrade as you grow. Cancel anytime.
-        </p>
-      </div>
+    <SectionContainer>
+      <SectionHeader
+        badge="What we offer"
+        title="Simple, Transparent Pricing."
+        subTitle="Start free and upgrade as you grow. Cancel anytime."
+      />
 
       <div className="mt-6 flex items-center justify-center gap-3">
         <Label htmlFor="billing" className={cn(!yearly && "text-foreground")}>
@@ -119,6 +118,6 @@ export function Pricing() {
           );
         })}
       </div>
-    </section>
+    </SectionContainer>
   );
 }

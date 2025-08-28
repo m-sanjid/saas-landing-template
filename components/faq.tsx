@@ -7,13 +7,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { siteConfig } from "@/lib/site-config";
+import { SectionContainer } from "./container";
+import { SectionHeader } from "./section-header";
 
 export function FAQ() {
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-4 py-16 md:py-20">
-      <h2 className="text-center text-3xl font-semibold text-balance md:text-4xl">
-        Frequently asked
-      </h2>
+    <SectionContainer>
+      <SectionHeader
+        title="Frequently asked"
+        subTitle="Got Questions? We’ve Got Answers"
+      />
       <div className="mt-6">
         <Accordion type="single" collapsible>
           {siteConfig.faq.map((item, idx) => (
@@ -28,6 +31,6 @@ export function FAQ() {
           ))}
         </Accordion>
       </div>
-    </section>
+    </SectionContainer>
   );
 }

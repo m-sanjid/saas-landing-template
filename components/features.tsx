@@ -3,11 +3,13 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { SectionHeader } from "./section-header";
+import { SectionContainer } from "./container";
 
 const items = [
   {
     title: "Performance-first",
-    desc: "Optimized for Core Web Vitals with image lazy-loading and modern best practices.",
+    desc: "Optimized for Core Web Vitals with lazy-loaded images, Next.js optimizations, and modern best practices.",
     icon: (
       <svg
         width="20"
@@ -25,7 +27,7 @@ const items = [
   },
   {
     title: "Accessible by default",
-    desc: "WCAG AA contrast, keyboard navigation, and screen reader friendly labels.",
+    desc: "WCAG AA contrast, full keyboard navigation, and semantic markup. No compromises.",
     icon: (
       <svg
         width="20"
@@ -43,7 +45,7 @@ const items = [
   },
   {
     title: "Motion-first",
-    desc: "Smooth reveals, scroll-linked parallax, and micro-interactions that convert.",
+    desc: "Smooth reveals, parallax scroll, and micro-interactions designed to boost engagement.",
     icon: (
       <svg
         width="20"
@@ -58,7 +60,7 @@ const items = [
   },
   {
     title: "Composable UI",
-    desc: "Clean, reusable components with TypeScript types and shadcn/ui primitives.",
+    desc: "Built with shadcn/ui primitives, Tailwind, and TypeScript for flexible, future-proof components.",
     icon: (
       <svg
         width="20"
@@ -78,53 +80,59 @@ const items = [
 
 export function Features() {
   return (
-    <section id="features" className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-      <div className="mx-auto max-w-3xl text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="text-3xl font-semibold text-balance md:text-4xl"
-        >
-          Everything you need to launch
-        </motion.h2>
-        <p className="text-muted-foreground mt-3 md:text-lg">
-          Built with a premium SaaS aesthetic: minimal, modern, and
-          conversion-focused.
-        </p>
-      </div>
+    <SectionContainer>
+      <SectionHeader
+        title="Everything you need to launch & scale"
+        subTitle="Crafted with a premium SaaS aesthetic: minimal, modern, and conversion-focused. Built to impress from day one."
+      />
 
-      <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+      {/* Features Grid */}
+      <motion.div
+        className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: {},
+          show: {
+            transition: { staggerChildren: 0.1 },
+          },
+        }}
+      >
         {items.map((item, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.4, delay: i * 0.05 }}
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              show: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className={cn(item.className)}
           >
-            <Card className="group bg-card/60 h-full border backdrop-blur transition will-change-transform hover:shadow-sm">
-              <CardHeader className="flex flex-row items-center gap-3">
-                <div
-                  className="flex h-9 w-9 items-center justify-center rounded-md"
+            <Card className="group bg-card/60 relative h-full border backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div className="from-brand-primary/10 to-brand-accent/10 absolute inset-0 rounded-xl bg-gradient-to-r opacity-0 blur-xl transition duration-500 group-hover:opacity-100" />
+              <CardHeader className="relative z-10 flex flex-row items-center gap-3">
+                <motion.div
+                  whileHover={{ rotate: 5, scale: 1.05 }}
+                  className="text-background flex h-10 w-10 items-center justify-center rounded-md shadow-sm"
                   style={{
                     background:
                       "linear-gradient(135deg, var(--brand-primary, #0ea5e9), var(--brand-accent, #14b8a6))",
                   }}
                 >
                   {item.icon}
-                </div>
-                <CardTitle className="text-base">{item.title}</CardTitle>
+                </motion.div>
+                <CardTitle className="text-foreground text-base font-semibold">
+                  {item.title}
+                </CardTitle>
               </CardHeader>
-              <CardContent className="text-muted-foreground text-sm">
+              <CardContent className="text-muted-foreground relative z-10 text-sm leading-relaxed">
                 {item.desc}
               </CardContent>
             </Card>
           </motion.div>
         ))}
-      </div>
-    </section>
+      </motion.div>
+    </SectionContainer>
   );
 }

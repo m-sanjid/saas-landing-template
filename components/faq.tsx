@@ -1,35 +1,24 @@
-"use client";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { siteConfig } from "@/lib/site-config";
 import { SectionContainer } from "./container";
 import { SectionHeader } from "./section-header";
+import { AccordionGroup } from "./accordion";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+  description: "Frequently asked questions about Lumen.",
+};
 
 export function FAQ() {
   return (
     <SectionContainer>
       <SectionHeader
+        badge="FAQ"
         title="Frequently asked"
         subTitle="Got Questions? We’ve Got Answers"
       />
-      <div className="mt-6">
-        <Accordion type="single" collapsible>
-          {siteConfig.faq.map((item, idx) => (
-            <AccordionItem value={`q-${idx}`} key={idx}>
-              <AccordionTrigger className="text-left">
-                {item.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                {item.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      <div className="mt-6 max-w-4xl mx-auto">
+        <AccordionGroup items={siteConfig.faq} />
       </div>
     </SectionContainer>
   );

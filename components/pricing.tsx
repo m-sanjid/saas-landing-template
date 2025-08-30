@@ -2,13 +2,6 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -16,6 +9,11 @@ import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import { SectionContainer } from "./container";
 import { SectionHeader } from "./section-header";
+import {
+  IconCheck,
+  IconChecklist,
+  IconCircleCheckFilled,
+} from "@tabler/icons-react";
 
 export function Pricing() {
   const [yearly, setYearly] = React.useState(true);
@@ -46,7 +44,7 @@ export function Pricing() {
         </Label>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
         {siteConfig.pricing.map((plan, idx) => {
           const price = yearly ? plan.yearly : plan.monthly;
           const suffix = yearly ? "/year" : "/month";
@@ -59,61 +57,50 @@ export function Pricing() {
               transition={{ duration: 0.4, delay: idx * 0.05 }}
               className={cn(plan.popular && "md:translate-y-[-8px]")}
             >
-              <Card
+              <div
                 className={cn(
-                  "bg-card/60 h-full border backdrop-blur transition",
-                  plan.popular && "ring-1 ring-(--brand-primary,#0ea5e9)",
+                  "bg-card/60 flex h-full flex-col justify-between gap-4 rounded-2xl border p-2 backdrop-blur transition",
+                  plan.popular && "ring-1 ring-(--cyan-500,#0ea5e9)",
                 )}
               >
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                <div className="bg-primary/5 relative rounded-lg border p-2 backdrop-blur-2xl">
+                  <div className="flex items-center justify-between">
                     <span>{plan.name}</span>
                     {plan.popular && (
-                      <span
-                        className="rounded-full px-2 py-0.5 text-xs"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, var(--brand-primary, #0ea5e9), var(--brand-accent, #14b8a6))",
-                          color: "white",
-                        }}
-                      >
+                      <span className="rounded-full border bg-cyan-500 px-2 py-0.5 text-xs font-medium tracking-tight text-white">
                         Most popular
                       </span>
                     )}
-                  </CardTitle>
-                  <p className="text-muted-foreground text-sm">
+                  </div>
+
+                  <p className="text-sm text-neutral-500 dark:text-neutral-300">
                     {plan.tagline}
                   </p>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-end gap-1">
-                    <span className="text-3xl font-semibold tracking-tight">
-                      ${price}
-                    </span>
-                    <span className="text-muted-foreground pb-1 text-sm">
-                      {suffix}
-                    </span>
+                  <div className="space-y-4">
+                    <div className="flex items-end gap-1">
+                      <span className="text-3xl font-semibold tracking-tight">
+                        ${price}
+                      </span>
+                      <span className="pb-1 text-sm text-neutral-500 dark:text-neutral-300">
+                        {suffix}
+                      </span>
+                    </div>
                   </div>
-                  <ul className="grid gap-2 text-sm">
-                    {plan.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2">
-                        <span
-                          className="inline-block h-4 w-4 rounded-[4px]"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, var(--brand-primary, #0ea5e9), var(--brand-accent, #14b8a6))",
-                          }}
-                          aria-hidden
-                        />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
+                </div>
+                <ul className="grid gap-2 p-2 text-sm">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <span className="inline-block h-4 w-4 rounded-[4px]">
+                        <IconCircleCheckFilled className="h-4 w-4 text-cyan-500" />
+                      </span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div>
                   <Button className="w-full">{plan.ctaLabel}</Button>
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
             </motion.div>
           );
         })}

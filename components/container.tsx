@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export const Container = ({ children }: { children: React.ReactNode }) => {
+export const Container = ({ children,className }: { children: React.ReactNode ,className?:string}) => {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">{children}</div>
   );

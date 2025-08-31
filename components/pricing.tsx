@@ -9,11 +9,7 @@ import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import { SectionContainer } from "./container";
 import { SectionHeader } from "./section-header";
-import {
-  IconCheck,
-  IconChecklist,
-  IconCircleCheckFilled,
-} from "@tabler/icons-react";
+import { IconCircleCheckFilled } from "@tabler/icons-react";
 
 export function Pricing() {
   const [yearly, setYearly] = React.useState(true);
@@ -59,7 +55,7 @@ export function Pricing() {
             >
               <div
                 className={cn(
-                  "bg-card/60 flex h-full flex-col justify-between gap-4 rounded-2xl border p-2 backdrop-blur transition",
+                  "bg-card/60 mx-auto flex h-full max-w-md flex-col justify-between gap-4 rounded-2xl border p-2 backdrop-blur transition",
                   plan.popular && "ring-1 ring-(--cyan-500,#0ea5e9)",
                 )}
               >

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,8 @@ import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import { SectionContainer } from "./container";
 import { SectionHeader } from "./section-header";
-import { IconCircleCheckFilled } from "@tabler/icons-react";
+import { IconCheck } from "@tabler/icons-react";
+import { SlidingNumber } from "./ui/sliding-number";
 
 export function Pricing() {
   const [yearly, setYearly] = React.useState(true);
@@ -22,8 +23,13 @@ export function Pricing() {
         subTitle="Start free and upgrade as you grow. Cancel anytime."
       />
 
-      <div className="mt-6 flex items-center justify-center gap-3">
-        <Label htmlFor="billing" className={cn(!yearly && "text-foreground")}>
+      <motion.div
+        initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="mb-6 flex items-center justify-center gap-3">
+        <Label htmlFor="billing" className={cn("relative rounded-md px-2 py-1", !yearly ? "text-primary font-semibold bg-primary/5 dark:bg-primary/10" : "text-muted-foreground bg-transparent")}>
           Monthly
         </Label>
         <Switch
@@ -32,13 +38,13 @@ export function Pricing() {
           onCheckedChange={setYearly}
           aria-label="Billing"
         />
-        <Label htmlFor="billing" className={cn(yearly && "text-foreground")}>
+        <Label htmlFor="billing" className={cn("relative rounded-md px-2 py-1", yearly ? "text-primary font-semibold bg-primary/5 dark:bg-primary/10" : "text-muted-foreground bg-transparent")}>
           Yearly{" "}
-          <span className="bg-secondary ml-1 rounded-sm px-1.5 py-0.5 text-xs">
+          <span className="bg-cyan-500/10 border-cyan-500 text-cyan-500 absolute -top-3 inline-block -right-10 rounded-sm px-1.5 py-0.5 text-[10px]">
             Save 2 mo
           </span>
         </Label>
-      </div>
+      </motion.div>
 
       <div className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
         {siteConfig.pricing.map((plan, idx) => {
@@ -47,23 +53,23 @@ export function Pricing() {
           return (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.05 }}
               className={cn(plan.popular && "md:translate-y-[-8px]")}
             >
               <div
                 className={cn(
-                  "bg-card/60 mx-auto flex h-full max-w-md flex-col justify-between gap-4 rounded-2xl border p-2 backdrop-blur transition",
-                  plan.popular && "ring-1 ring-(--cyan-500,#0ea5e9)",
+                  "bg-card/60 mx-auto flex h-full max-w-md flex-col justify-between gap-4 rounded-2xl border p-4 backdrop-blur transition",
+                  plan.popular && "ring-1 ring-cyan-500 dark:ring-cyan-400/80",
                 )}
               >
-                <div className="bg-primary/5 relative rounded-lg border p-2 backdrop-blur-2xl">
+                <div className={cn("bg-primary/5 relative rounded-[10px] border p-2 backdrop-blur-2xl", plan.popular ? "bg-gradient-to-b from-cyan-500/10 to-cyan-500/5" : "bg-primary/5")}>
                   <div className="flex items-center justify-between">
                     <span>{plan.name}</span>
                     {plan.popular && (
-                      <span className="rounded-full border bg-cyan-500 px-2 py-0.5 text-xs font-medium tracking-tight text-white">
+                      <span className="rounded-md border bg-cyan-500 px-2 py-0.5 text-xs font-medium tracking-tight text-white">
                         Most popular
                       </span>
                     )}
@@ -73,9 +79,9 @@ export function Pricing() {
                     {plan.tagline}
                   </p>
                   <div className="space-y-4">
-                    <div className="flex items-end gap-1">
-                      <span className="text-3xl font-semibold tracking-tight">
-                        ${price}
+                    <div className="flex items-end gap-1 mt-2 md:mt-4">
+                      <span className="text-3xl font-semibold tracking-tight inline-flex items-center">
+                        $<SlidingNumber value={price} />
                       </span>
                       <span className="pb-1 text-sm text-neutral-500 dark:text-neutral-300">
                         {suffix}
@@ -87,7 +93,7 @@ export function Pricing() {
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2">
                       <span className="inline-block h-4 w-4 rounded-[4px]">
-                        <IconCircleCheckFilled className="h-4 w-4 text-cyan-500" />
+                        <IconCheck className="h-4 w-4 text-white bg-cyan-500 dark:bg-cyan-400 rounded-[4px] p-px" strokeWidth={3} />
                       </span>
                       <span>{f}</span>
                     </li>

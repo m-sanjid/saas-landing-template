@@ -19,7 +19,7 @@ export const SectionHeader = ({
   return (
     <header
       className={cn(
-        "mx-auto flex w-full max-w-6xl flex-col items-center justify-center text-center",
+        "mx-auto flex w-full max-w-6xl flex-col items-center justify-center text-center mb-10 md:mb-16",
         className,
       )}
     >
@@ -29,7 +29,7 @@ export const SectionHeader = ({
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="bg-primary/10 mb-3 rounded-full px-2 py-1 text-xs font-medium tracking-wide backdrop-blur-md md:px-3"
+          className="bg-primary/10 mb-3 rounded-md px-2 py-1 text-xs font-medium tracking-wide backdrop-blur-md md:px-3"
         >
           {badge}
         </MotionDiv>

@@ -24,7 +24,7 @@ export const generateMetadata = async ({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> => {
   const { slug } = await params;
-  const {name, url} = siteConfig;
+  const { name, url } = siteConfig;
   const frontmatter = await getBlogFrontmatterBySlug(slug);
 
   if (!frontmatter) {
@@ -100,22 +100,20 @@ export const generateMetadata = async ({
         },
         ...(frontmatter.image
           ? [
-              {
-                url: frontmatter.image.startsWith("http")
-                  ? frontmatter.image
-                  : `${url}${frontmatter.image}`,
-                width: 1024,
-                height: 576,
-                alt: `${frontmatter.title} blog post image`,
-              },
-            ]
+            {
+              url: frontmatter.image.startsWith("http")
+                ? frontmatter.image
+                : `${url}${frontmatter.image}`,
+              width: 1024,
+              height: 576,
+              alt: `${frontmatter.title} blog post image`,
+            },
+          ]
           : []),
       ],
     },
     twitter: {
       card: "summary_large_image",
-      site: "@m_sanjid",
-      creator: "@m_sanjid",
       title,
       description,
       images: [
@@ -136,7 +134,7 @@ export default async function BlogPost({
 }) {
   const { slug } = await params;
   const blog = await getSingleBlog(slug);
-  const {name, url} = siteConfig;
+  const { name, url } = siteConfig;
 
   if (!blog) {
     redirect("/blog");
@@ -207,102 +205,96 @@ export default async function BlogPost({
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <article
-          className="mx-auto max-w-4xl px-4 py-12"
+          className="mx-auto max-w-[740px] px-5 md:px-8 py-16 text-foreground"
           itemScope
           itemType="https://schema.org/BlogPosting"
         >
-          {/* Hidden metadata for SEO */}
-          <div className="sr-only">
-            <h1 itemProp="headline">{frontmatter.title}</h1>
-            <p itemProp="description">{frontmatter.description}</p>
-            <span
-              itemProp="author"
-              itemScope
-              itemType="https://schema.org/Person"
+          {/* Hero Image */}
+          {frontmatter.image && (
+            <MotionDiv
+              initial={{ opacity: 0, scale: 1.02 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="mx-auto aspect-video mb-12 shadow-md max-w-5xl overflow-hidden rounded-2xl"
             >
-              <span itemProp="name">{name}</span>
-            </span>
-            <time itemProp="datePublished" dateTime={frontmatter.date}>
-              {frontmatter.date}
-            </time>
-            <time itemProp="dateModified" dateTime={new Date().toISOString()}>
-              {new Date().toISOString()}
-            </time>
-            {frontmatter.tags && (
-              <div itemProp="keywords">{frontmatter.tags.join(", ")}</div>
-            )}
-          </div>
-          <header className="mb-8">
-            <h1 className="mb-4 text-4xl font-bold" itemProp="headline">
+              <img
+                src={frontmatter.image}
+                alt={frontmatter.title}
+                className="w-full h-auto object-cover rounded-2xl transition-transform duration-700 ease-out hover:scale-[1.02]"
+              />
+            </MotionDiv>
+          )}
+
+          {/* Header */}
+          <header className="mb-12">
+            <h1
+              className="mb-6 text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl text-foreground"
+              itemProp="headline"
+            >
               {frontmatter.title}
             </h1>
+
             <p
-              className="mb-4 text-lg text-muted-foreground"
+              className="mr-auto mb-6 max-w-2xl text-base text-muted-foreground md:text-lg"
               itemProp="description"
             >
               {frontmatter.description}
             </p>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+
+            <div className="flex flex-wrap justify-start items-center gap-3 text-sm text-muted-foreground/80">
               <time
                 dateTime={frontmatter.date}
                 itemProp="datePublished"
-                className="flex items-center gap-1"
+                className="capitalize"
               >
-                <span className="sr-only">Published on </span>
-                {new Date(frontmatter.date).toLocaleDateString("en-us", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
+                {new Date(frontmatter.date).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
                 })}
               </time>
-              <span className="text-muted-foreground/60">•</span>
-              <span className="text-muted-foreground">
-                {Math.max(
-                  1,
-                  Math.ceil(content.toString().split(" ").length / 200),
-                )}{" "}
-                min read
+
+              <span>•</span>
+
+              <span>
+                {Math.max(1, Math.ceil(content.toString().split(' ').length / 200))} min read
               </span>
+
               {frontmatter.tags && (
                 <>
-                  <span className="text-muted-foreground/60">•</span>
-                  <div itemProp="keywords">
-                    <Tags tags={frontmatter.tags} />
-                  </div>
+                  <span>•</span>
+                  <Tags tags={frontmatter.tags} />
                 </>
               )}
             </div>
           </header>
-          <div
-            className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary/80 prose-pre:rounded-lg prose-pre:bg-muted prose-pre:p-4 prose-img:rounded-lg prose-img:shadow-md"
-            itemProp="articleBody"
-          >
-            {content}
-          </div>
 
-          <nav aria-label="Blog post navigation" className="mt-12">
+          <div>{content}</div>
+
+          {/* Footer */}
+          <footer className="mt-16 border-t border-border/50 pt-8">
             <PostNavigation
               basePath="blog"
               prevPost={
                 prevBlog
                   ? {
-                      slug: prevBlog.slug,
-                      title: prevBlog.title ?? "Untitled",
-                    }
+                    slug: prevBlog.slug,
+                    title: prevBlog.title ?? 'Untitled',
+                  }
                   : null
               }
               nextPost={
                 nextBlog
                   ? {
-                      slug: nextBlog.slug,
-                      title: nextBlog.title ?? "Untitled",
-                    }
+                    slug: nextBlog.slug,
+                    title: nextBlog.title ?? 'Untitled',
+                  }
                   : null
               }
             />
-          </nav>
+          </footer>
         </article>
+
       </MotionDiv>
     </main>
   );

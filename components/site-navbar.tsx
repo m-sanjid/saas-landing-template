@@ -6,17 +6,14 @@ import { usePathname } from "next/navigation";
 import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "motion/react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/components/auth-provider";
-import { UserDropdown } from "@/components/user-dropdown";
 import { IconArrowRight, IconMenu2, IconX } from "@tabler/icons-react";
 
 export function SiteNavbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [hoveredLink, setHoveredLink] = React.useState<string | null>(null);
-  const { user, isLoading } = useAuth();
   const pathname = usePathname();
 
   React.useEffect(() => {
@@ -36,29 +33,6 @@ export function SiteNavbar() {
     return pathname.startsWith(href);
   };
 
-  const logoVariants: Variants = {
-    initial: { rotate: -10, opacity: 0, scale: 0.8 },
-    animate: {
-      rotate: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 15,
-        delay: 0.1,
-      },
-    },
-    hover: {
-      rotate: [0, -5, 5, 0],
-      scale: 1.05,
-      transition: {
-        rotate: { duration: 0.5, ease: "easeInOut" },
-        scale: { duration: 0.2 },
-      },
-    },
-    tap: { scale: 0.95 },
-  };
 
   const navLinkVariants: Variants = {
     initial: { y: -20, opacity: 0 },
@@ -169,7 +143,7 @@ export function SiteNavbar() {
                     "relative rounded-md px-4 py-2 text-sm font-medium transition-all duration-200",
                     isActive
                       ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                      : "text-muted-foreground hover:text-foreground hover:opacity-90",
                   )}
                 >
                   {link.label}
@@ -184,20 +158,6 @@ export function SiteNavbar() {
                         type: "spring",
                         stiffness: 300,
                         damping: 30,
-                      }}
-                    />
-                  )}
-
-                  {/* Hover indicator */}
-                  {hoveredLink === link.href && !isActive && (
-                    <motion.div
-                      layoutId="hoverTab"
-                      className="bg-muted/30 absolute inset-0 rounded-md"
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 35,
                       }}
                     />
                   )}
@@ -218,36 +178,30 @@ export function SiteNavbar() {
           </motion.div>
 
           <AnimatePresence mode="wait">
-            {!isLoading && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-center gap-2"
-              >
-                {user ? (
-                  <UserDropdown />
-                ) : (
-                  <div className="hidden items-center gap-2 md:flex">
-                    <Button variant="secondary" size="sm" asChild>
-                      <Link href="/auth/signin">Sign In</Link>
-                    </Button>
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Button asChild className="group/btn">
-                        <Link href="/auth/signup">
-                          <span className="ml-1">Get Started</span>
-                          <IconArrowRight className="h-4 w-4 transition-all duration-200 group-hover/btn:translate-x-1" />
-                        </Link>
-                      </Button>
-                    </motion.div>
-                  </div>
-                )}
-              </motion.div>
-            )}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center gap-2"
+            >
+              <div className="hidden items-center gap-2 md:flex">
+                <Button variant="secondary" size="sm" asChild>
+                  <Link href="/auth/signin">Sign In</Link>
+                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button asChild className="group/btn">
+                    <Link href="/auth/signup">
+                      <span className="ml-1">Get Started</span>
+                      <IconArrowRight className="h-4 w-4 transition-all duration-200 group-hover/btn:translate-x-1" />
+                    </Link>
+                  </Button>
+                </motion.div>
+              </div>
+            </motion.div>
           </AnimatePresence>
 
           {/* Mobile Menu Toggle */}
@@ -339,27 +293,19 @@ export function SiteNavbar() {
                 variants={mobileItemVariants}
                 custom={siteConfig.nav.links.length}
               >
-                {!user ? (
-                  <div className="flex justify-end gap-2">
-                    <Button variant="secondary" asChild>
-                      <Link href="/auth/signin">
-                        <span className="ml-1">Sign In</span>
-                      </Link>
-                    </Button>
-                    <Button asChild className="group/btn">
-                      <Link href="/auth/signup">
-                        <span className="ml-1">Get Started</span>
-                        <IconArrowRight className="h-4 w-4 transition-all duration-200 group-hover/btn:translate-x-1" />
-                      </Link>
-                    </Button>
-                  </div>
-                ) : (
-                  <Button asChild>
-                    <Link href="/dashboard">
-                      <span className="ml-1">Dashboard</span>
+                <div className="flex justify-end gap-2">
+                  <Button variant="secondary" asChild>
+                    <Link href="/auth/signin">
+                      <span className="ml-1">Sign In</span>
                     </Link>
                   </Button>
-                )}
+                  <Button asChild className="group/btn">
+                    <Link href="/auth/signup">
+                      <span className="ml-1">Get Started</span>
+                      <IconArrowRight className="h-4 w-4 transition-all duration-200 group-hover/btn:translate-x-1" />
+                    </Link>
+                  </Button>
+                </div>
               </motion.div>
             </div>
           </motion.div>

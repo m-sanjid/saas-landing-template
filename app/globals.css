@@ -119,7 +119,99 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.prose {
+  @apply max-w-none leading-relaxed text-foreground antialiased selection:bg-primary/10;
+}
+
+/* Headings – clean hierarchy with subtle weight differences */
+.prose h1 {
+  @apply mb-6 text-2xl font-semibold tracking-tight text-foreground md:text-3xl;
+}
+
+.prose h2 {
+  @apply mb-4 mt-10 text-xl font-medium tracking-tight text-foreground md:text-2xl;
+}
+
+.prose h3 {
+  @apply mb-3 mt-8 text-lg font-medium tracking-tight text-foreground md:text-xl;
+}
+
+/* Paragraphs – airy, easy on the eyes */
+.prose p {
+  @apply mb-5 text-[13.5px] leading-relaxed text-muted-foreground md:text-[15px];
+}
+
+/* Links – subtle hover motion, no underline by default */
+.prose a {
+  @apply relative font-medium text-foreground no-underline transition-all duration-200 ease-in-out hover:text-primary;
+}
+
+.prose a::after {
+  content: "";
+  @apply absolute left-0 bottom-0 h-[1px] w-0 bg-primary transition-all duration-300;
+}
+
+.prose a:hover::after {
+  @apply w-full;
+}
+
+/* Lists – refined spacing */
+.prose ul {
+  @apply mb-5 ml-5 list-disc space-y-1 text-muted-foreground;
+}
+
+.prose ol {
+  @apply mb-5 ml-5 list-decimal space-y-1 text-muted-foreground;
+}
+
+.prose li {
+  @apply text-[13.5px] leading-relaxed md:text-[15px];
+}
+
+/* Code blocks – Apple-style soft background */
+.prose pre {
+  @apply my-4 overflow-x-auto rounded-lg p-4 font-mono text-[13px] text-foreground;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-foreground;
+}
+
+/* Inline code – subtle highlight */
+.prose code:not(pre code) {
+  @apply rounded-md bg-primary/10 px-[5px] py-[2px] text-[13px] font-medium text-primary;
+}
+
+/* Blockquotes – minimalist vertical line */
+.prose blockquote {
+  @apply my-6 border-l-2 border-border pl-4 italic text-muted-foreground;
+}
+
+/* Images – soft corners, subtle shadow */
+.prose img {
+  @apply my-6 rounded-xl shadow-sm transition-transform duration-300 hover:scale-[1.02];
+}
+
+/* Horizontal rule – thin and elegant */
+.prose hr {
+  @apply my-8 border-t border-border/70;
+}
+
+/* Dark mode harmony */
+.dark .prose {
+  @apply text-foreground;
+}
+
+.dark .prose a {
+  @apply text-foreground hover:text-primary;
+}
+
+.dark .prose strong {
+  @apply text-foreground;
 }

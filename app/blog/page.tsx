@@ -1,15 +1,14 @@
 
 import PageHeader from "@/components/page-header";
-import MotionDiv from "@/components/motion-div";
-import Tags from "@/components/tags";
 import { Metadata } from "next";
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
 import { getAllBlogs } from "@/lib/mdx";
 import { siteConfig } from "@/lib/site-config";
+import { Container } from "@/components/container";
+import { BlogCard } from "@/components/blog-card";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const {name, url} = siteConfig;
+  const { name, url } = siteConfig;
   const title = `Blog | ${name}`;
   const description =
     "Thoughts, tutorials, and insights about web development.";
@@ -70,48 +69,28 @@ export default async function BlogPage() {
     );
   }
   return (
-    <div className="py-20">
-      <div className="space-y-8">
-        {/* Header */}
-        <PageHeader
-          title="Blog"
-          subTitle="Thoughts, tutorials, and insights about web development."
-        />
-
-        {/* Blog posts list */}
-        <div className="space-y-12 divide-y">
+    <main id="content" role="main">
+      {/* Header */}
+      <PageHeader
+        title="Blog"
+        subTitle="Thoughts, tutorials, and insights about web development."
+      />
+      <Container>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 mt-10 px-4">
           {blogPosts.map((post, index) => (
-            <MotionDiv
+            <BlogCard
               key={post.slug}
-              initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
-            >
-              <Link
-                href={`/blog/${post.slug}`}
-                className="group mt-4 block space-y-4"
-              >
-                <h2 className="text-base md:text-lg">{post.title}</h2>
-                <p className="text-xs text-muted-foreground transition-colors duration-200 group-hover:text-primary md:text-base">
-                  {post.description}
-                </p>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <span>
-                    {post.date &&
-                      new Date(post.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                  </span>
-                  <span className="mx-2">•</span>
-                  {post.tags && <Tags tags={post.tags} />}
-                </div>
-              </Link>
-            </MotionDiv>
+              slug={post.slug}
+              title={post.title}
+              date={post.date}
+              tags={post.tags}
+              image={post.image}
+              index={index}
+            />
           ))}
         </div>
-      </div>
-    </div>
+
+      </Container>
+    </main>
   );
 }

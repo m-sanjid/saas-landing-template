@@ -272,7 +272,7 @@ export default async function BlogPost({
           <div>{content}</div>
 
           {/* Footer */}
-          <footer className="mt-16 border-t border-border/50 pt-8">
+          <footer className="pt-8">
             <PostNavigation
               basePath="blog"
               prevPost={

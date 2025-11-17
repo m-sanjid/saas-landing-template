@@ -1,0 +1,250 @@
+---
+title: "Modern CSS in 2025: New Features You Should Be Using"
+description: "Discover the latest CSS features in 2025 that will transform how you style the web, including Container Queries, CSS Nesting, and more."
+date: "2025-10-05"
+image: "/images/blog/modern-css-2025.png"
+tags: ["css", "frontend", "webdesign", "responsive", "css4"]
+---
+
+CSS has evolved dramatically in recent years, with new features that make it more powerful and flexible than ever. In 2025, we have access to features that were once only possible with JavaScript or complex workarounds. Let's explore the most exciting modern CSS features and how you can start using them today.
+
+---
+
+## Container Queries: The Game Changer
+
+Container queries allow elements to style themselves based on the size of their container rather than just the viewport. This is a revolutionary change for component-based development.
+
+```css
+/* Define a container */
+.component {
+  container-type: inline-size;
+  container-name: card;
+}
+
+/* Style based on container size */
+@container card (min-width: 400px) {
+  .card {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+  
+  .card img {
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+}
+```
+
+## CSS Nesting (Native)
+
+Native CSS nesting is now supported in all modern browsers, making your styles more readable and maintainable:
+
+```css
+.card {
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+  
+  /* Nested selectors */
+  & .title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    
+    /* & refers to the parent selector */
+    &:hover {
+      color: #3b82f6;
+    }
+  }
+  
+  /* Media queries can be nested too */
+  @media (min-width: 768px) {
+    padding: 2rem;
+  }
+}
+```
+
+## CSS Grid Level 3 (Subgrid)
+
+Subgrid allows grid items to participate in the grid of their parent, enabling more complex layouts with less code:
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-row: span 3; /* Each card spans 3 rows */
+  
+  /* Inherit the parent grid */
+  grid-template-rows: subgrid;
+  
+  /* Style the nested elements */
+  & > * {
+    margin: 0;
+  }
+  
+  .header { grid-row: 1; }
+  .content { grid-row: 2; }
+  .footer { grid-row: 3; }
+}
+```
+
+## CSS Color Level 4 and 5
+
+Modern CSS brings new color spaces and functions for better color manipulation:
+
+```css
+:root {
+  /* New color spaces */
+  --primary: oklch(70% 0.15 240);
+  --secondary: color(display-p3 1 0.5 0);
+  
+  /* Color manipulation */
+  --primary-dark: color-mix(in oklch, var(--primary), black 20%);
+  --primary-light: color-mix(in oklch, var(--primary), white 20%);
+  
+  /* Relative color syntax */
+  --primary-hover: oklch(from var(--primary) l c h / 0.9);
+}
+
+.button {
+  background: var(--primary);
+  color: white;
+  
+  &:hover {
+    background: var(--primary-dark);
+  }
+  
+  &:active {
+    background: var(--primary-light);
+  }
+}
+```
+
+## Scroll-Driven Animations
+
+Create sophisticated scroll-based animations without JavaScript:
+
+```css
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-scroll {
+  animation: fadeIn linear both;
+  animation-timeline: view();
+  animation-range: entry 20% cover 50%;
+}
+```
+
+## CSS Container Style Queries
+
+Style elements based on their container's computed styles:
+
+```css
+.theme-toggle {
+  container-name: theme;
+  container-type: style;
+}
+
+@container style(--theme: dark) {
+  body {
+    background: #1a1a1a;
+    color: #f5f5f5;
+  }
+}
+
+@container style(--theme: light) {
+  body {
+    background: #ffffff;
+    color: #333333;
+  }
+}
+```
+
+## Modern CSS Reset
+
+Here's a modern CSS reset that takes advantage of new features:
+
+```css
+/* Box sizing rules */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Set core root defaults */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Make images easier to work with */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  font-style: italic;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Inherit fonts for inputs and buttons */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* Remove animations for people who've turned them off */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+## Browser Support and Fallbacks
+
+While these features are well-supported in modern browsers, it's important to provide fallbacks:
+
+```css
+/* Fallback for browsers that don't support container queries */
+.card {
+  /* Default mobile styles */
+  display: flex;
+  flex-direction: column;
+}
+
+@supports (container-type: inline-size) {
+  .card {
+    container-type: inline-size;
+  }
+  
+  @container (min-width: 400px) {
+    .card {
+      flex-direction: row;
+    }
+  }
+}
+```
+
+## Conclusion
+
+Modern CSS in 2025 offers powerful features that make it easier than ever to create responsive, maintainable, and beautiful user interfaces. By leveraging these new capabilities, you can write less code, achieve better performance, and create more flexible layouts. Start experimenting with these features in your projects today to stay ahead of the curve!

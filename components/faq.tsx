@@ -17,7 +17,7 @@ export function FAQ() {
         title="Frequently asked"
         subTitle="Got Questions? We’ve Got Answers"
       />
-      <div className="mt-6 max-w-4xl mx-auto">
+      <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-muted/40 bg-card/30 p-6 shadow-sm backdrop-blur-sm md:p-10">
         <AccordionGroup items={siteConfig.faq} />
       </div>
     </SectionContainer>

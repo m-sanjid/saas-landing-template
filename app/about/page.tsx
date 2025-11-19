@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { SectionHeader } from "@/components/section-header";
 import { Users, Target, Rocket } from "lucide-react";
-import PageHeader from "@/components/page-header";
+import { PageHeader } from "@/components/page-header";
 import { Container } from "@/components/container";
 
 export const metadata: Metadata = {

@@ -7,7 +7,7 @@ export default function TermsPage() {
     <main id="content" role="main" tabIndex={-1}>
       <PageHeader
         title="Terms of Service"
-        description="Please read these terms carefully before using our service."
+        subTitle="Please read these terms carefully before using our service."
       />
 
       <Container className="py-16">

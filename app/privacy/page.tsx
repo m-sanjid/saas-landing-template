@@ -7,7 +7,7 @@ export default function PrivacyPage() {
     <main id="content" role="main" tabIndex={-1}>
       <PageHeader
         title="Privacy Policy"
-        description="How we collect, use, and protect your personal information."
+        subTitle="How we collect, use, and protect your personal information."
       />
 
       <Container className="py-16">

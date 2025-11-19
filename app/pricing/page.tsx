@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Pricing } from "@/components/pricing";
 import { siteConfig } from "@/lib/site-config";
 import Image from "next/image";
-import PageHeader from "@/components/page-header";
+import { PageHeader } from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: `Pricing — ${siteConfig.name}`,

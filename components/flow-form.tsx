@@ -149,14 +149,13 @@ export default function FlowForm() {
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-        const res = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        if (!res.ok) throw new Error("Failed request");
+      if (!res.ok) throw new Error("Failed request");
       toast.success("Message sent successfully");
       form.reset();
     } catch {
@@ -171,6 +170,8 @@ export default function FlowForm() {
       onSubmit={form.handleSubmit(onSubmit)}
       className="m-2 mx-auto max-w-xl space-y-6 rounded-xl border bg-neutral-50 p-4 dark:bg-neutral-950"
     >
+      <h2 className="mb-4 text-lg font-semibold">Send us a message</h2>
+
       {/* Progress bar */}
       <div className="mb-6 h-1 w-full overflow-hidden rounded bg-neutral-200 dark:bg-neutral-700">
         <motion.div

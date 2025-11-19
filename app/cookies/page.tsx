@@ -1,6 +1,6 @@
 import { siteConfig } from "@/lib/site-config";
 import { Container } from "@/components/container";
-import PageHeader from "@/components/page-header";
+import { PageHeader } from "@/components/page-header";
 
 export default function CookiesPage() {
   return (

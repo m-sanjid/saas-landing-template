@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, User } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { toast } from "sonner";
@@ -62,9 +62,9 @@ export default function SignUpPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="border-0 shadow-lg">
+          <Card className="bg-card/50 border-muted/40 shadow-xl backdrop-blur-xl">
             <CardHeader className="space-y-1 text-center">
-              <div className="from-primary to-accent mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br">
+              <div className="from-primary to-accent mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br shadow-lg">
                 <User className="h-6 w-6 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold">
@@ -78,7 +78,7 @@ export default function SignUpPage() {
               {/* Google Sign Up */}
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full bg-white/50 hover:bg-white/80 dark:bg-neutral-900/50 dark:hover:bg-neutral-900/80"
                 onClick={() => toast("Google Sign Up")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -107,7 +107,7 @@ export default function SignUpPage() {
                   <Separator className="w-full" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background text-muted-foreground px-2">
+                  <span className="bg-background/50 text-muted-foreground px-2 backdrop-blur-sm">
                     Or continue with email
                   </span>
                 </div>
@@ -115,7 +115,10 @@ export default function SignUpPage() {
 
               {/* Email Sign Up Form */}
               <form
-                onSubmit={() => toast("Email Sign Up")}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast("Email Sign Up");
+                }}
                 className="space-y-4"
               >
                 <div className="grid grid-cols-2 gap-4">
@@ -130,7 +133,7 @@ export default function SignUpPage() {
                         placeholder="First name"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className="pl-10"
+                        className="bg-white/50 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                         required
                       />
                     </div>
@@ -146,7 +149,7 @@ export default function SignUpPage() {
                         placeholder="Last name"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className="pl-10"
+                        className="bg-white/50 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                         required
                       />
                     </div>
@@ -164,7 +167,7 @@ export default function SignUpPage() {
                       placeholder="Enter your email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="pl-10"
+                      className="bg-white/50 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                       required
                     />
                   </div>
@@ -181,13 +184,13 @@ export default function SignUpPage() {
                       placeholder="Create a password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="pr-10 pl-10"
+                      className="bg-white/50 pr-10 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-muted-foreground hover:text-foreground absolute top-3 right-3"
+                      className="text-muted-foreground hover:text-foreground absolute top-3 right-3 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -209,7 +212,7 @@ export default function SignUpPage() {
                       placeholder="Confirm your password"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className="pr-10 pl-10"
+                      className="bg-white/50 pr-10 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                       required
                     />
                     <button
@@ -217,7 +220,7 @@ export default function SignUpPage() {
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
-                      className="text-muted-foreground hover:text-foreground absolute top-3 right-3"
+                      className="text-muted-foreground hover:text-foreground absolute top-3 right-3 transition-colors"
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -254,7 +257,10 @@ export default function SignUpPage() {
                   </Label>
                 </div>
 
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                >
                   Create account
                 </Button>
               </form>

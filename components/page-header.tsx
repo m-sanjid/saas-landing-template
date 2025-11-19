@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { TextReveal } from "./text-animations";
 
-const PageHeader = ({
+export function PageHeader({
   title,
   subTitle,
   className,
@@ -10,9 +10,9 @@ const PageHeader = ({
   title: string;
   subTitle: string;
   className?: string;
-}) => {
+}) {
   return (
-    <div className="relative mask-t-from-95% mask-b-from-90% py-10 overflow-hidden">
+    <div className="relative overflow-hidden mask-t-from-95% mask-b-from-90% py-10">
       <div className="absolute -right-20 -bottom-20 h-80 w-20 bg-sky-500 blur-3xl dark:opacity-60"></div>
       <div className="absolute -bottom-20 -left-20 h-80 w-20 bg-sky-500 blur-3xl dark:opacity-60"></div>
       <div className="absolute inset-x-0 -bottom-0 mx-auto h-4 w-1/2 bg-sky-500 blur-3xl dark:opacity-60"></div>
@@ -38,6 +38,4 @@ const PageHeader = ({
       </div>
     </div>
   );
-};
-
-export default PageHeader;
+}

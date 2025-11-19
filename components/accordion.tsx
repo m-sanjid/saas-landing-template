@@ -98,7 +98,7 @@ export function Accordion({
 }
 
 export interface AccordionGroupProps {
-  items: { id: string; title: string; content: React.ReactNode|string }[];
+  items: { id: string; title: string; content: React.ReactNode | string }[];
   allowMultiple?: boolean;
   defaultOpen?: string[]; // array of ids to be open initially
   className?: string;

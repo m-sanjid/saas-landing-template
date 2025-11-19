@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -28,8 +28,18 @@ export function Pricing() {
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        className="mb-6 flex items-center justify-center gap-3">
-        <Label htmlFor="billing" className={cn("relative rounded-md px-2 py-1", !yearly ? "text-primary font-semibold bg-primary/5 dark:bg-primary/10" : "text-muted-foreground bg-transparent")}>
+        className="mb-10 flex items-center justify-center gap-3"
+      >
+        <Label
+          htmlFor="billing"
+          className={cn(
+            "relative cursor-pointer rounded-full px-4 py-2 text-sm transition-colors",
+            !yearly
+              ? "bg-primary/10 font-semibold text-primary"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+          onClick={() => setYearly(false)}
+        >
           Monthly
         </Label>
         <Switch
@@ -38,69 +48,102 @@ export function Pricing() {
           onCheckedChange={setYearly}
           aria-label="Billing"
         />
-        <Label htmlFor="billing" className={cn("relative rounded-md px-2 py-1", yearly ? "text-primary font-semibold bg-primary/5 dark:bg-primary/10" : "text-muted-foreground bg-transparent")}>
+        <Label
+          htmlFor="billing"
+          className={cn(
+            "relative cursor-pointer rounded-full px-4 py-2 text-sm transition-colors",
+            yearly
+              ? "bg-primary/10 font-semibold text-primary"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+          onClick={() => setYearly(true)}
+        >
           Yearly{" "}
-          <span className="bg-cyan-500/10 border-cyan-500 text-cyan-500 absolute -top-3 inline-block -right-10 rounded-sm px-1.5 py-0.5 text-[10px]">
-            Save 2 mo
+          <span className="absolute -right-8 -top-4 rotate-12 rounded-sm bg-gradient-to-r from-cyan-500 to-blue-500 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm">
+            -20%
           </span>
         </Label>
       </motion.div>
 
-      <div className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mx-auto mt-8 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
         {siteConfig.pricing.map((plan, idx) => {
           const price = yearly ? plan.yearly : plan.monthly;
           const suffix = yearly ? "/year" : "/month";
           return (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
-              className={cn(plan.popular && "md:translate-y-[-8px]")}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className={cn(
+                "relative",
+                plan.popular && "md:-mt-4 md:mb-4"
+              )}
             >
+              {plan.popular && (
+                <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 opacity-70 blur-sm" />
+              )}
               <div
                 className={cn(
-                  "bg-card/60 mx-auto flex h-full max-w-md flex-col justify-between gap-4 rounded-2xl border p-4 backdrop-blur transition",
-                  plan.popular && "ring-1 ring-cyan-500 dark:ring-cyan-400/80",
+                  "relative flex h-full flex-col justify-between rounded-2xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md",
+                  plan.popular ? "border-transparent bg-background" : "border-border",
                 )}
               >
-                <div className={cn("bg-primary/5 relative rounded-[10px] border p-2 backdrop-blur-2xl", plan.popular ? "bg-gradient-to-b from-cyan-500/10 to-cyan-500/5" : "bg-primary/5")}>
+                <div>
                   <div className="flex items-center justify-between">
-                    <span>{plan.name}</span>
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {plan.name}
+                    </h3>
                     {plan.popular && (
-                      <span className="rounded-md border bg-cyan-500 px-2 py-0.5 text-xs font-medium tracking-tight text-white">
-                        Most popular
+                      <span className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1 text-xs font-medium text-white shadow-sm">
+                        Most Popular
                       </span>
                     )}
                   </div>
-
-                  <p className="text-sm text-neutral-500 dark:text-neutral-300">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     {plan.tagline}
                   </p>
-                  <div className="space-y-4">
-                    <div className="flex items-end gap-1 mt-2 md:mt-4">
-                      <span className="text-3xl font-semibold tracking-tight inline-flex items-center">
+                  <AnimatePresence>
+                    <motion.div
+                      layout
+                      className="mt-6 flex items-baseline gap-1">
+                      <span className="text-4xl font-bold tracking-tight inline-flex text-foreground">
                         $<SlidingNumber value={price} />
                       </span>
-                      <span className="pb-1 text-sm text-neutral-500 dark:text-neutral-300">
+                      <motion.span
+                        key={suffix}
+                        initial={{ opacity: 0, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, filter: "blur(0px)" }}
+                        transition={{ duration: 0.3 }}
+                        className="text-sm font-medium text-muted-foreground">
                         {suffix}
-                      </span>
-                    </div>
-                  </div>
+                      </motion.span>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <ul className="mt-8 space-y-3 text-sm">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3 text-muted-foreground">
+                        <IconCheck className="h-5 w-5 shrink-0 text-primary" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="grid gap-2 p-2 text-sm">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2">
-                      <span className="inline-block h-4 w-4 rounded-[4px]">
-                        <IconCheck className="h-4 w-4 text-white bg-cyan-500 dark:bg-cyan-400 rounded-[4px] p-px" strokeWidth={3} />
-                      </span>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div>
-                  <Button className="w-full">{plan.ctaLabel}</Button>
+
+                <div className="mt-8">
+                  <Button
+                    className={cn(
+                      "w-full transition-all hover:scale-[1.02]",
+                      plan.popular
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40"
+                        : "hover:bg-accent hover:text-accent-foreground"
+                    )}
+                    variant={plan.popular ? "default" : "outline"}
+                  >
+                    {plan.ctaLabel}
+                  </Button>
                 </div>
               </div>
             </motion.div>

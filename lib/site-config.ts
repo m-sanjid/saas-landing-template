@@ -27,16 +27,17 @@ export const siteConfig = {
   nav: {
     logo: "Lumen",
     links: [
-      { label: "Features", href: "#features" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "Testimonials", href: "#testimonials" },
-      { label: "FAQ", href: "#faq" },
+      { label: "About", href: "/about" },
+      { label: "Features", href: "/features" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Contact", href: "/contact" },
     ] as NavLink[],
   },
   socials: [
     { label: "Twitter", href: "https://twitter.com" },
     { label: "GitHub", href: "https://github.com" },
     { label: "LinkedIn", href: "https://linkedin.com" },
+    { label: "Mail", href: "mailto:contact@example.com" },
   ] as SocialLink[],
   pricing: [
     {
@@ -77,20 +78,28 @@ export const siteConfig = {
   ] as PricingPlan[],
   faq: [
     {
-      q: "Is this template production-ready?",
-      a: "Yes—built with Next.js, TypeScript, Tailwind, shadcn/ui, and Framer Motion. Accessible, responsive, and Core Web Vitals friendly.",
+      id: "q-1",
+      title: "Is this template production-ready?",
+      content:
+        "Yes—built with Next.js, TypeScript, Tailwind, shadcn/ui, and Framer Motion. Accessible, responsive, and Core Web Vitals friendly.",
     },
     {
-      q: "Can I customize branding?",
-      a: "Absolutely. Update site-config.ts and swap assets. Tailwind and tokens make theme updates straightforward.",
+      id: "q-2",
+      title: "Can I customize branding?",
+      content:
+        "Absolutely. Update site-config.ts and swap assets. Tailwind and tokens make theme updates straightforward.",
     },
     {
-      q: "Do you offer updates?",
-      a: "Yes—lifetime updates for bug fixes, performance improvements, and compatibility changes.",
+      id: "q-3",
+      title: "Do you offer updates?",
+      content:
+        "Yes—lifetime updates for bug fixes, performance improvements, and compatibility changes.",
     },
     {
-      q: "Can I use this commercially?",
-      a: "Yes—use for client projects or your SaaS. Resale of the template itself is not allowed.",
+      id: "q-4",
+      title: "Can I use this commercially?",
+      content:
+        "Yes—use for client projects or your SaaS. Resale of the template itself is not allowed.",
     },
   ],
 };

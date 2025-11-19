@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { toast } from "sonner";
@@ -47,9 +47,9 @@ export default function SignInPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="border-0 shadow-lg">
+          <Card className="bg-card/50 border-muted/40 shadow-xl backdrop-blur-xl">
             <CardHeader className="space-y-1 text-center">
-              <div className="from-primary to-accent mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br">
+              <div className="from-primary to-accent mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br shadow-lg">
                 <Lock className="h-6 w-6 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
@@ -61,7 +61,7 @@ export default function SignInPage() {
               {/* Google Sign In */}
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full bg-white/50 hover:bg-white/80 dark:bg-neutral-900/50 dark:hover:bg-neutral-900/80"
                 onClick={() => toast("Google Sign In")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -90,7 +90,7 @@ export default function SignInPage() {
                   <Separator className="w-full" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background text-muted-foreground px-2">
+                  <span className="bg-background/50 text-muted-foreground px-2 backdrop-blur-sm">
                     Or continue with email
                   </span>
                 </div>
@@ -98,7 +98,10 @@ export default function SignInPage() {
 
               {/* Email Sign In Form */}
               <form
-                onSubmit={() => toast("Email Sign In")}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast("Email Sign In");
+                }}
                 className="space-y-4"
               >
                 <div className="space-y-2">
@@ -111,7 +114,7 @@ export default function SignInPage() {
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10"
+                      className="bg-white/50 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                       required
                     />
                   </div>
@@ -127,13 +130,13 @@ export default function SignInPage() {
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pr-10 pl-10"
+                      className="bg-white/50 pr-10 pl-10 focus:bg-white dark:bg-neutral-900/50 dark:focus:bg-neutral-900"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-muted-foreground hover:text-foreground absolute top-3 right-3"
+                      className="text-muted-foreground hover:text-foreground absolute top-3 right-3 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -144,7 +147,10 @@ export default function SignInPage() {
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                >
                   Sign in
                 </Button>
               </form>
@@ -165,7 +171,7 @@ export default function SignInPage() {
                 <div className="text-sm">
                   <Link
                     href="/auth/forgot-password"
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Forgot your password?
                   </Link>

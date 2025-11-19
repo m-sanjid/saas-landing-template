@@ -13,11 +13,10 @@ import { IconArrowRight, IconMenu2, IconX } from "@tabler/icons-react";
 export function SiteNavbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const [hoveredLink, setHoveredLink] = React.useState<string | null>(null);
   const pathname = usePathname();
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
@@ -28,11 +27,22 @@ export function SiteNavbar() {
     setMenuOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when menu is open
+  React.useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [menuOpen]);
+
   const isActiveLink = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
-
 
   const navLinkVariants: Variants = {
     initial: { y: -20, opacity: 0 },
@@ -53,18 +63,18 @@ export function SiteNavbar() {
 
   const mobileMenuVariants: Variants = {
     closed: {
-      height: 0,
       opacity: 0,
+      y: -20,
       transition: {
-        duration: 0.3,
+        duration: 0.2,
         ease: "easeInOut",
       },
     },
     open: {
-      height: "auto",
       opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.4,
+        duration: 0.3,
         ease: "easeOut",
       },
     },
@@ -76,7 +86,7 @@ export function SiteNavbar() {
       x: 0,
       opacity: 1,
       transition: {
-        delay: i * 0.1,
+        delay: 0.1 + i * 0.05,
         duration: 0.3,
         ease: "easeOut",
       },
@@ -86,19 +96,11 @@ export function SiteNavbar() {
   return (
     <motion.header
       initial={false}
-      animate={{
-        backgroundColor: scrolled
-          ? "hsl(var(--background) / 0.8)"
-          : "transparent",
-        backdropFilter: scrolled ? "blur(16px)" : "blur(0px)",
-      }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={cn(
-        "data-[scrolled=true]:border-border sticky top-0 z-50 border-b border-transparent",
-      )}
+      className={cn("sticky top-0 z-50 border-b", scrolled || menuOpen ? "bg-white dark:bg-gray-900" : "bg-transparent")}
       role="banner"
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         {/* Logo */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
           <Link
@@ -107,7 +109,7 @@ export function SiteNavbar() {
             aria-label={`${siteConfig.name} Home`}
           >
             <motion.div
-              className="h-6 w-6 rounded-md"
+              className="h-8 w-8 rounded-lg shadow-sm"
               initial={{ rotate: -10, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 200, damping: 15 }}
@@ -116,7 +118,7 @@ export function SiteNavbar() {
                   "linear-gradient(135deg, var(--brand-primary, #0ea5e9), var(--brand-accent, #14b8a6))",
               }}
             />
-            <span className="text-foreground font-semibold tracking-tight">
+            <span className="text-lg font-bold tracking-tight text-foreground">
               {siteConfig.name}
             </span>
           </Link>
@@ -134,16 +136,14 @@ export function SiteNavbar() {
                 animate="animate"
                 whileHover="hover"
                 custom={i}
-                onHoverStart={() => setHoveredLink(link.href)}
-                onHoverEnd={() => setHoveredLink(null)}
               >
                 <Link
                   href={link.href}
                   className={cn(
-                    "relative rounded-md px-4 py-2 text-sm font-medium transition-all duration-200",
+                    "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
                     isActive
-                      ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:opacity-90",
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {link.label}
@@ -152,7 +152,7 @@ export function SiteNavbar() {
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="bg-primary/10 border-primary/20 absolute inset-0 rounded-md border"
+                      className="absolute inset-0 rounded-full bg-primary/10"
                       initial={false}
                       transition={{
                         type: "spring",
@@ -186,14 +186,14 @@ export function SiteNavbar() {
               className="flex items-center gap-2"
             >
               <div className="hidden items-center gap-2 md:flex">
-                <Button variant="secondary" size="sm" asChild>
+                <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
                   <Link href="/auth/signin">Sign In</Link>
                 </Button>
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Button asChild className="group/btn">
+                  <Button asChild className="group/btn rounded-full px-6 shadow-lg shadow-primary/20">
                     <Link href="/auth/signup">
                       <span className="ml-1">Get Started</span>
                       <IconArrowRight className="h-4 w-4 transition-all duration-200 group-hover/btn:translate-x-1" />
@@ -206,7 +206,7 @@ export function SiteNavbar() {
 
           {/* Mobile Menu Toggle */}
           <motion.button
-            className="hover:bg-muted relative rounded-lg p-2 transition-colors duration-200 md:hidden"
+            className="relative z-50 rounded-full p-2 hover:bg-muted transition-colors duration-200 md:hidden"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             whileTap={{ scale: 0.95 }}
@@ -215,24 +215,22 @@ export function SiteNavbar() {
               {menuOpen ? (
                 <motion.div
                   key="close"
-                  layoutId="toggle-menu"
-                  initial={{ y: 10, opacity: 0, filter: "blur(5px)" }}
-                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                  exit={{ y: 10, opacity: 0, filter: "blur(5px)" }}
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <IconX className="text-foreground h-5 w-5" />
+                  <IconX className="h-6 w-6 text-foreground" />
                 </motion.div>
               ) : (
                 <motion.div
                   key="menu"
-                  layoutId="toggle-menu"
-                  initial={{ y: -10, opacity: 0, filter: "blur(5px)" }}
-                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                  exit={{ y: -10, opacity: 0, filter: "blur(5px)" }}
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <IconMenu2 className="text-foreground h-5 w-5" />
+                  <IconMenu2 className="h-6 w-6 text-foreground" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -248,9 +246,9 @@ export function SiteNavbar() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="border-border bg-background/95 overflow-hidden border-t backdrop-blur-md md:hidden"
+            className="fixed inset-x-0 top-[60px] bottom-0 z-40 flex flex-col bg-background/95 backdrop-blur-md md:hidden"
           >
-            <div className="flex flex-col gap-1 px-4 py-4">
+            <div className="flex flex-1 flex-col gap-2 px-4 py-8">
               {siteConfig.nav.links.map((link, i) => {
                 const isActive = isActiveLink(link.href);
                 return (
@@ -262,24 +260,18 @@ export function SiteNavbar() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "relative flex items-center rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
+                        "flex items-center justify-between rounded-xl px-4 py-4 text-lg font-medium transition-all duration-200",
                         isActive
-                          ? "text-primary bg-primary/10 border-primary/20 border"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
                       )}
                       onClick={() => setMenuOpen(false)}
                     >
-                      <span className="relative z-10">{link.label}</span>
+                      <span>{link.label}</span>
                       {isActive && (
                         <motion.div
-                          className="bg-primary absolute right-3 h-2 w-2 rounded-full"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 20,
-                          }}
+                          className="h-2 w-2 rounded-full bg-primary"
+                          layoutId="mobileActiveDot"
                         />
                       )}
                     </Link>
@@ -287,25 +279,20 @@ export function SiteNavbar() {
                 );
               })}
 
-              {/* Mobile Auth Buttons */}
               <motion.div
-                className="border-border/50 mt-4 space-y-3 border-t pt-4"
                 variants={mobileItemVariants}
                 custom={siteConfig.nav.links.length}
+                className="mt-auto space-y-4 px-4 pb-8"
               >
-                <div className="flex justify-end gap-2">
-                  <Button variant="secondary" asChild>
-                    <Link href="/auth/signin">
-                      <span className="ml-1">Sign In</span>
-                    </Link>
-                  </Button>
-                  <Button asChild className="group/btn">
-                    <Link href="/auth/signup">
-                      <span className="ml-1">Get Started</span>
-                      <IconArrowRight className="h-4 w-4 transition-all duration-200 group-hover/btn:translate-x-1" />
-                    </Link>
-                  </Button>
-                </div>
+                <Button variant="outline" size="lg" className="w-full justify-center rounded-xl" asChild>
+                  <Link href="/auth/signin">Sign In</Link>
+                </Button>
+                <Button size="lg" className="w-full justify-center rounded-xl shadow-lg shadow-primary/20" asChild>
+                  <Link href="/auth/signup">
+                    Get Started
+                    <IconArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
               </motion.div>
             </div>
           </motion.div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
-import PageHeader from "@/components/page-header";
+import { PageHeader } from "@/components/page-header";
 import { Container } from "@/components/container";
 import FlowForm from "@/components/flow-form";
 import { IconBrandGithub, IconBrandX, IconMail } from "@tabler/icons-react";

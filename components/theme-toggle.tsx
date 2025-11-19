@@ -1,23 +1,35 @@
 "use client";
+
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { IconMoonFilled, IconSunFilled } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const [mounted, setMounted] = useState(false);
 
-  function toggle() {
-    setTheme(isDark ? "light" : "dark");
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" className="rounded-full" disabled>
+        <IconSunFilled className="opacity-0" />
+      </Button>
+    );
   }
+
+  const isDark = resolvedTheme === "dark";
 
   return (
     <Button
       variant="ghost"
       size="icon"
       aria-label="Toggle theme"
-      onClick={toggle}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
       className="rounded-full"
     >
       <AnimatePresence mode="wait" initial={false}>

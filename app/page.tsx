@@ -13,7 +13,6 @@ export default function HomePage() {
       <Testimonials />
       <Pricing />
       <FAQ />
-      <CtaBanner />
     </main>
   );
 }

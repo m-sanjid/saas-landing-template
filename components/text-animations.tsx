@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "motion/react";
+import { motion } from "motion/react";
 
 interface TextRevealProps {
   text: string;

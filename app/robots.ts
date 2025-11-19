@@ -1,7 +1,7 @@
 import { siteConfig } from "@/lib/site-config";
 
 export default function robots() {
-  const base = siteConfig.url?.replace(/\/$/, "") || "https://example.com";
+  const base = siteConfig.url?.replace(/\/$/, "") || "https://saas-landing.com";
   return {
     rules: {
       userAgent: "*",
